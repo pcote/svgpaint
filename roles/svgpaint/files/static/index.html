@@ -38,6 +38,15 @@
                     <td>Color: </td>
                     <td><input type="color" id="colorInput"</td>
                 </tr>
+                <tr>
+                    <td>Shape: </td>
+                    <td>
+                        <select id="shapeSelect">
+                            <option value="square" default>square</option>
+                            <option value="circle">circle</option>
+                        </select>
+                    </td>
+                </tr>
             </table>
 
         </div>
@@ -63,12 +72,19 @@ $(function(){
     };
 
     var mouseDrawHandler = function(evt){
+        var currentShape = "square"; // default
         var xPos = evt.offsetX;
         var yPos = evt.offsetY;
         if(dragging){
-            var rect = svg.rect(brushSize, brushSize);
-            rect.move(xPos, yPos);
-            rect.fill(currentColor);
+            currentShape = $("#shapeSelect").val();
+            if(currentShape === "square"){
+                var shape = svg.rect(brushSize, brushSize);
+            }
+            else {
+                var shape = svg.circle(brushSize);
+            }
+            shape.move(xPos, yPos);
+            shape.fill(currentColor);
         }
     };
 
