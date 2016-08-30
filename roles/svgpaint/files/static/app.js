@@ -39,10 +39,14 @@ $(function(){
         currentColor = $("#colorInput").val();
     };
 
+    var wipeClickHandler = function(evt){
+        svg.clear();
+    };
 
     $("#drawingArea").mousemove(mouseDrawHandler);
     $("#drawingArea").mouseup(mouseUpHandler);
     $("#drawingArea").mousedown(mouseDownHandler);
     $("#brushSizeField").change(brushChangeHandler);
     $("#colorInput").change(colorChangeHandler);
+    $("#wipeButton").click(wipeClickHandler);
 });
