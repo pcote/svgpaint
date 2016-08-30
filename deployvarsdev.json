@@ -1,0 +1,7 @@
+{
+    "hostname": "all",
+    "domain":"svgpaint.com",
+    "appname":"svgpaint",
+    "mysql_root_password":"rootPassword",
+    "proxyport":3033
+}

@@ -1,0 +1,80 @@
+- name: Setup folders
+  file:
+    dest: "{{item}}"
+    owner: www-data
+    group: www-data
+    mode: 0770
+    state: directory
+  with_items:
+    - "/var/app/{{appname}}"
+    - "/var/log/{{appname}}"
+    - "/var/www/{{appname}}"
+
+
+- name: Setup the MySQL database for the application
+  mysql_db:
+    name: "{{appname}}"
+    login_user: root
+    login_password: "{{mysql_root_password}}"
+    encoding: utf8
+    collation: utf8_general_ci
+
+
+- name: Copy over core application files.
+  copy:
+    src: "{{item}}"
+    dest: "/var/app/{{appname}}/{{item}}"
+    owner: www-data
+    group: www-data
+    mode: 0664
+  with_items:
+    - view.py
+    - model.py
+  notify: "restart {{appname}}"
+
+
+- name: Copy over html and javascript static assets
+  copy:
+    src: static
+    dest: "/var/www/{{appname}}/"
+    mode: 0664
+    owner: www-data
+    group: www-data
+
+
+- name: copy over nginx template
+  template:
+    src: nginx_template.conf
+    dest: "/etc/nginx/sites-available/{{appname}}.conf"
+    mode: 0664
+    owner: www-data
+    group: www-data
+  notify: restart nginx
+
+
+- name: copy over the uwsgi template
+  template:
+    src: uwsgi_config.template
+    dest: "/var/app/{{appname}}/{{appname}}.ini"
+    mode: 0664
+    owner: www-data
+    group: www-data
+  notify: "restart {{appname}}"
+
+
+- name: symlink setup
+  file:
+    path: "/etc/nginx/sites-enabled/{{appname}}.conf"
+    src: "/etc/nginx/sites-available/{{appname}}.conf"
+    state: link
+  notify: restart nginx
+
+
+- name: Copy over the upstart service script
+  template:
+    src: upstart.template
+    dest: "/etc/init/{{appname}}.conf"
+    owner: www-data
+    group: www-data
+    mode: 0660
+  notify: "restart {{appname}}"

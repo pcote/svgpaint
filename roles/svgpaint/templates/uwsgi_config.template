@@ -1,0 +1,7 @@
+[uwsgi]
+socket=127.0.0.1:{{proxyport}}
+wsgi-file=/var/app/{{appname}}/view.py
+env=PYTHONPATH=/var/app/{{appname}}/
+env=PATH=/var/app/{{appname}}/
+module=view:app
+logto=/var/log/{{appname}}/wsgi.log

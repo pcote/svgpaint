@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Sample Page</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/svg.js/2.3.4/svg.min.js"></script>
+</head>
+<body>
+
+<nav class="navbar navbar-default">
+    <div class="container">
+            <ul class="nav navbar-nav">
+                <li>
+                    <a href="#" data-toggle="dropdown">File...<span class="caret"></a></span>
+                    <ul class="dropdown-menu">
+                        <li><a href="#" id="menuNew">new</a></li>
+                        <li><a href="#" id="menuLoad">load</a></li>
+                        <li><a href="#" id="menuSave">save</a></li>
+                    </ul>
+                </li>
+            </ul>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-3"><input type="number" id="brushSizeField"/></div>
+        <div class="col-lg-9" id="drawingArea" style="border: 1px solid black;"></div>
+    </div>
+</div>
+
+<script>
+
+$(function(){
+    var svg = SVG("drawingArea").size(800, 800);
+
+    var dragging = false;
+    var brushSize = 10;
+
+    var mouseUpHandler = function(evt){
+        dragging = false;
+    };
+
+    var mouseDownHandler = function(evt){
+        dragging = true;
+    };
+
+    var mouseDrawHandler = function(evt){
+        var xPos = evt.offsetX;
+        var yPos = evt.offsetY;
+        if(dragging){
+            var rect = svg.rect(brushSize, brushSize);
+            rect.move(xPos, yPos);
+        }
+    };
+
+    var brushChangeHandler = function(evt){
+        var newBrushSize = $("#brushSizeField").val();
+        brushSize = Number(newBrushSize);
+    };
+
+    $("#drawingArea").mousemove(mouseDrawHandler);
+    $("#drawingArea").mouseup(mouseUpHandler);
+    $("#drawingArea").mousedown(mouseDownHandler);
+    $("#brushSizeField").change(brushChangeHandler);
+});
+
+</script>
+</body>
+</html>
