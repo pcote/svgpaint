@@ -28,7 +28,19 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-lg-3"><input type="number" id="brushSizeField"/></div>
+        <div class="col-lg-3">
+            <table>
+                <tr>
+                    <td>Brush Size: </td>
+                    <td><input type="number" id="brushSizeField" value="10"/></td>
+                </tr>
+                <tr>
+                    <td>Color: </td>
+                    <td><input type="color" id="colorInput"</td>
+                </tr>
+            </table>
+
+        </div>
         <div class="col-lg-9" id="drawingArea" style="border: 1px solid black;"></div>
     </div>
 </div>
@@ -40,6 +52,7 @@ $(function(){
 
     var dragging = false;
     var brushSize = 10;
+    var currentColor = "#000000";
 
     var mouseUpHandler = function(evt){
         dragging = false;
@@ -55,6 +68,7 @@ $(function(){
         if(dragging){
             var rect = svg.rect(brushSize, brushSize);
             rect.move(xPos, yPos);
+            rect.fill(currentColor);
         }
     };
 
@@ -63,10 +77,16 @@ $(function(){
         brushSize = Number(newBrushSize);
     };
 
+    var colorChangeHandler = function(evt){
+        currentColor = $("#colorInput").val();
+    };
+
+
     $("#drawingArea").mousemove(mouseDrawHandler);
     $("#drawingArea").mouseup(mouseUpHandler);
     $("#drawingArea").mousedown(mouseDownHandler);
     $("#brushSizeField").change(brushChangeHandler);
+    $("#colorInput").change(colorChangeHandler);
 });
 
 </script>
