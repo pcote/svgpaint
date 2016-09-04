@@ -30,7 +30,7 @@ def login():
 
 @app.route("/")
 def index():
-    return redirect("/static/index.html")
+    return redirect("/static/login.html")
 
 
 @app.route("/load", methods=["POST"])
