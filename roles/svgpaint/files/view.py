@@ -1,5 +1,5 @@
-from flask import Flask, redirect, request, render_template
-from flask_login import LoginManager, login_user
+from flask import Flask, redirect, request, render_template, url_for
+from flask_login import LoginManager, login_user, login_required
 import model
 
 
@@ -23,9 +23,14 @@ def login():
         user.is_active = True
         user.is_authenticated = True
         login_user(user)
-        return render_template("mainpage.html")
+        return redirect(url_for("main_page"))
     else:
         return "Your credentials are wrong. Please backspace and try again"
+
+
+@app.route("/mainpage")
+def main_page():
+    return render_template("mainpage.html")
 
 
 @app.route("/")
