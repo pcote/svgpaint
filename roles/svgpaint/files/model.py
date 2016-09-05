@@ -29,8 +29,22 @@ class User(Base):
     def get_id(self):
         return self.username
 
+
 Session = sessionmaker(bind=eng)
 Base.metadata.create_all(eng)
+
+
+def create_user(uname, pw):
+    sess = Session()
+    user = User(username=uname, password=pw)
+    sess.add(user)
+    sess.commit()
+
+
+def get_user(uname):
+    sess = Session()
+    user = sess.query(User).filter_by(username=uname).one_or_none()
+    return user
 
 
 if __name__ == '__main__':
