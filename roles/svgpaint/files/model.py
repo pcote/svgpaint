@@ -16,6 +16,7 @@ pw = config_sec.get("password")
 db_url = "mysql+pymysql://{}:{}@localhost/svgpaint".format(user, pw)
 eng = create_engine(db_url)
 
+
 Base = declarative_base()
 
 class User(Base):
@@ -47,8 +48,13 @@ def get_user(uname):
     return user
 
 
+def is_password_valid(uname, pw):
+    user = get_user(uname)
+    if user and user.password == pw:
+        return True
+    return False
+
+
+
 if __name__ == '__main__':
-    sess = Session()
-    user = User(username="cotejrp", password="rosebud")
-    sess.add(user)
-    sess.commit()
+    pass
