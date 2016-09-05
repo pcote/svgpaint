@@ -38,8 +38,10 @@ def logout():
 
 @app.route("/mainpage")
 def main_page():
-    return render_template("mainpage.html")
-
+    if current_user.is_anonymous:
+        return redirect("/static/login.html")
+    else:
+        return render_template("mainpage.html")
 
 @app.route("/")
 def index():
