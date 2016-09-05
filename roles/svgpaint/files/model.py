@@ -40,11 +40,13 @@ def create_user(uname, pw):
     user = User(username=uname, password=pw)
     sess.add(user)
     sess.commit()
+    sess.close()
 
 
 def get_user(uname):
     sess = Session()
     user = sess.query(User).filter_by(username=uname).one_or_none()
+    sess.close()
     return user
 
 
@@ -55,6 +57,13 @@ def is_password_valid(uname, pw):
     return False
 
 
+def set_authenticate(uname, auth_status):
+    sess = Session()
+    user = get_user(uname)
+    user.is_authenticated = auth_status
+    sess.add(user)
+    sess.commit()
+    sess.close()
 
 if __name__ == '__main__':
     pass

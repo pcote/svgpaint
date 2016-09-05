@@ -1,5 +1,5 @@
 from flask import Flask, redirect, request, render_template, url_for
-from flask_login import LoginManager, login_user, login_required
+from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 import model
 
 
@@ -26,6 +26,14 @@ def login():
         return redirect(url_for("main_page"))
     else:
         return "Your credentials are wrong. Please backspace and try again"
+
+
+@app.route("/logout")
+def logout():
+    username = current_user.username
+    model.set_authenticate(username, False)
+    logout_user()
+    return redirect("/static/login.html")
 
 
 @app.route("/mainpage")
