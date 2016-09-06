@@ -30,7 +30,16 @@
   with_items:
     - view.py
     - model.py
+    - config.ini
   notify: "restart {{appname}}"
+
+- name: Copy over the template
+  copy:
+    src: templates
+    dest: "/var/app/{{appname}}/"
+    owner: www-data
+    group: www-data
+    mode: 0644
 
 
 - name: Copy over html and javascript static assets

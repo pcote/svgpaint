@@ -21,7 +21,7 @@ Base = declarative_base()
 
 class User(Base):
     __tablename__ = "users"
-    username = Column(Text, primary_key=True, nullable=False)
+    username = Column(VARCHAR(50), primary_key=True, nullable=False)
     password = Column(Text, nullable=False)
     is_active = Column(Boolean, default=False)
     is_authenticated = Column(Boolean, default=False)

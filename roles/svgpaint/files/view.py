@@ -4,6 +4,7 @@ import model
 
 
 app = Flask(__name__)
+app.secret_key="SetSecretKeyHere"
 logman = LoginManager()
 logman.init_app(app)
 
@@ -61,5 +62,4 @@ def new_image():
     return "Stub stuff for server side new image creation..."
 
 if __name__ == '__main__':
-    app.secret_key="SetSecretKeyHere"
     app.run(debug=True)
