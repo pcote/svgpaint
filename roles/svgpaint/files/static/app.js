@@ -5,7 +5,6 @@ $(function(){
     var brushSize = 10;
     var currentColor = "#000000";
 
-    /////////////// Routines for drawing in the drawing area ///////////////
     var mouseUpHandler = function(evt){
         dragging = false;
     };
@@ -50,7 +49,4 @@ $(function(){
     $("#brushSizeField").change(brushChangeHandler);
     $("#colorInput").change(colorChangeHandler);
     $("#wipeButton").click(wipeClickHandler);
-
-    ///////////////// end routines for drawing in the drawing area ////////////
-
 });
