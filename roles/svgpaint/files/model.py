@@ -26,15 +26,29 @@ class User(Base):
     is_active = Column(Boolean, default=False)
     is_authenticated = Column(Boolean, default=False)
     is_anonymous = Column(Boolean, default=False)
+    drawings = relationship("Drawing")
 
     def get_id(self):
         return self.username
 
 
+class Drawing(Base):
+    __tablename__ = "drawings"
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    name = Column(VARCHAR(50))
+    user = Column(ForeignKey("users.username"))
+
 
 Session = sessionmaker(bind=eng)
 Base.metadata.create_all(eng)
 
+
+def create_drawing(drawing_name, uid):
+    sess = Session()
+    drawing = Drawing(name=drawing_name, user=uid)
+    sess.add(drawing)
+    sess.commit()
+    sess.close()
 
 def create_user(uname, pw):
     sess = Session()
@@ -49,6 +63,14 @@ def get_user(uname):
     user = sess.query(User).filter_by(username=uname).one_or_none()
     sess.close()
     return user
+
+
+def get_drawings(uid):
+    sess = Session()
+    user = sess.query(User).filter_by(username=uid).one_or_none()
+    drawings = user.drawings
+    sess.close()
+    return drawings
 
 
 def is_password_valid(uname, pw):
