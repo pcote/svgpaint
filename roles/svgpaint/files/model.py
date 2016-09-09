@@ -26,29 +26,10 @@ class User(Base):
     is_active = Column(Boolean, default=False)
     is_authenticated = Column(Boolean, default=False)
     is_anonymous = Column(Boolean, default=False)
-    drawings = relationship("Drawing", back_populates="user")
 
     def get_id(self):
         return self.username
 
-
-class Drawing(Base):
-    __tablename__ = "drawings"
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    name = Column(VARCHAR(50))
-    user_id = Column(ForeignKey("users.username"))
-    pixels = relationship("BrushPixel", back_populates="drawing")
-
-
-class BrushPixel(Base):
-    __tablename__ = "brushpixels"
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    color = Column(VARCHAR(25))
-    shape = Column(VARCHAR(25))
-    x = Column(Integer, nullable=False)
-    y = Column(Integer, nullable=False)
-    size = Column(Integer, nullable=False)
-    drawing_id = Column(ForeignKey("drawings.id"))
 
 
 Session = sessionmaker(bind=eng)
