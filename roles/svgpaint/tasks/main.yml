@@ -30,7 +30,15 @@
   with_items:
     - view.py
     - model.py
-    - config.ini
+  notify: "restart {{appname}}"
+
+- name: Bring over the template version of the config file.
+  template:
+    src: config.ini.template
+    dest: "/var/app/{{appname}}/config.ini"
+    mode: 0664
+    owner: www-data
+    group: www-data
   notify: "restart {{appname}}"
 
 - name: Copy over the template
