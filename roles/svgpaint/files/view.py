@@ -55,10 +55,7 @@ def load_image():
 
 @app.route("/save", methods=["POST"])
 def save_image():
-    json_data = request.get_json()
-    for entry in json_data.get("saveData"):
-        print(entry)
-    return "Data Received"
+    return "Stub code for save image server code...."
 
 @app.route("/new")
 def new_image():
