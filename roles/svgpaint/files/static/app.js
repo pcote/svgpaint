@@ -58,6 +58,7 @@ $(function(){
     var saveUserData = function(creds){
         var drawingData = []
         var rawSvgList = $("#drawingArea")[0].children[0].children;
+        var drawingName = $("#drawingNameField").val();
         var i;
         var pixelRecord;
         var jsonData = "";
@@ -79,8 +80,7 @@ $(function(){
 
         jsonArg = JSON.stringify({
             "drawingData": drawingData,
-            "drawingName": "tempDrawingName"
-        });
+            "drawingName": drawingName });
 
         var drawingName = "testdrawing"; // todo: fill in this blank.
         var username = creds.username;
