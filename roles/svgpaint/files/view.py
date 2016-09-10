@@ -1,7 +1,6 @@
-from flask import Flask, redirect, request, render_template, url_for
+from flask import Flask, session, redirect, request, render_template, url_for, jsonify
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 import model
-
 
 app = Flask(__name__)
 app.secret_key="SetSecretKeyHere"
@@ -55,7 +54,27 @@ def load_image():
 
 @app.route("/save", methods=["POST"])
 def save_image():
-    return "Stub code for save image server code...."
+    auth_data = request.authorization
+    user_name = auth_data.username
+    password = auth_data.password
+    json_data = request.get_json()
+    drawing_name = json_data.get("drawingName")
+    pixel_data = json_data.get("drawingData")
+    if model.is_password_valid(user_name, password):
+        model.create_drawing(drawing_name, user_name, pixel_data)
+        return "Save Successful"
+    else:
+        return "Save failed due to invalid credentials"
+
+
+@app.route("/usercreds", methods=["GET"])
+def get_user_creds():
+    user_id = session.get("user_id")
+    password = model.get_user(user_id).password
+    credentials = {"username": user_id,
+                   "password": password}
+    return jsonify(credentials)
+
 
 @app.route("/new")
 def new_image():

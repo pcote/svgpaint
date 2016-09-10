@@ -49,4 +49,72 @@ $(function(){
     $("#brushSizeField").change(brushChangeHandler);
     $("#colorInput").change(colorChangeHandler);
     $("#wipeButton").click(wipeClickHandler);
+
+
+    var successMessage = function(msg){
+        alert(msg);
+    };
+
+    var saveUserData = function(creds){
+        var drawingData = []
+        var rawSvgList = $("#drawingArea")[0].children[0].children;
+        var i;
+        var pixelRecord;
+        var jsonData = "";
+
+        for(i=0; i< rawSvgList.length; i++){
+            tag = rawSvgList[i]
+            if(tag.tagName === "rect" || tag.tagName === "circle"){
+                pixelRecord = {
+                    shape: tag.tagName,
+                    color: tag.getAttribute("fill"),
+                    x: tag.getAttribute("x"),
+                    y: tag.getAttribute("y"),
+                    size: tag.getAttribute("width")
+                };
+
+                drawingData = drawingData.concat(pixelRecord);
+            }
+        }
+
+        jsonArg = JSON.stringify({
+            "drawingData": drawingData,
+            "drawingName": "tempDrawingName"
+        });
+
+        var drawingName = "testdrawing"; // todo: fill in this blank.
+        var username = creds.username;
+        var password = creds.password;
+        var basicCreds = "Basic " + btoa(username + ":" + password);
+        var req = {
+            url: "/save",
+            method: "post",
+            headers: {
+                "Content-type": "application/json",
+                "Authorization": basicCreds
+            },
+
+            data: jsonArg
+        };
+
+        var promise = $.ajax(req)
+        promise.then(successMessage);
+    };
+
+    var getUserCredentials = function(){
+        var req = {
+            url: "/usercreds",
+            method: "get"
+        };
+
+        var promise = $.ajax(req);
+        return promise;
+    };
+
+    var saveHandler = function(evt){
+        var promise = getUserCredentials();
+        promise.then(saveUserData);
+    };
+
+    $("#menuSave").click(saveHandler);
 });

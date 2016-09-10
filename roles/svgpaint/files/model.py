@@ -37,15 +37,37 @@ class Drawing(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(VARCHAR(50))
     user = Column(ForeignKey("users.username"))
+    pixels = relationship("BrushPixel")
+
+
+class BrushPixel(Base):
+    __tablename__ = "brushpixels"
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    color = Column(VARCHAR(25), nullable=False)
+    shape = Column(VARCHAR(25), nullable=False)
+    x = Column(Integer, nullable=False)
+    y = Column(Integer, nullable=False)
+    size = Column(Integer, nullable=False)
+    drawing_id = Column(ForeignKey("drawings.id"))
 
 
 Session = sessionmaker(bind=eng)
 Base.metadata.create_all(eng)
 
 
-def create_drawing(drawing_name, uid):
+def create_drawing(drawing_name, uid, pixel_data):
     sess = Session()
     drawing = Drawing(name=drawing_name, user=uid)
+
+    for pixel in pixel_data:
+        color = pixel.get("color")
+        shape = pixel.get("shape")
+        x = pixel.get("x")
+        y = pixel.get("y")
+        size = pixel.get("size")
+        bp = BrushPixel(shape=shape, color=color, x=x, y=y, size=size)
+        drawing.pixels.append(bp)
+
     sess.add(drawing)
     sess.commit()
     sess.close()
