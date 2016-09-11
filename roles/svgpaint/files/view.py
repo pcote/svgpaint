@@ -63,7 +63,7 @@ def save_image():
     json_data = request.get_json()
     drawing_name = json_data.get("drawingName")
     pixel_data = json_data.get("drawingData")
-    model.create_drawing(drawing_name, user_name, pixel_data)
+    model.save_drawing(drawing_name, user_name, pixel_data)
     return "Save Successful"
 
 

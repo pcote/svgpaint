@@ -72,6 +72,23 @@ def create_drawing(drawing_name, uid, pixel_data):
     sess.commit()
     sess.close()
 
+def save_drawing(drawing_name, uid, pixel_data_list):
+    sess = Session()
+    drawing = sess.query(Drawing).filter_by(name=drawing_name, user=uid).one_or_none()
+    if not drawing:
+        drawing = Drawing(name=drawing_name, user=uid)
+
+    pixel_objects = []
+    for pd in pixel_data_list:
+        pixel = BrushPixel(color=pd.get("color"), shape=pd.get("shape"),
+                           x=pd.get("x"), y=pd.get("y"), size=pd.get("size"))
+        pixel_objects.append(pixel)
+
+    drawing.pixels = pixel_objects
+    sess.add(drawing)
+    sess.commit()
+    sess.close()
+
 def create_user(uname, pw):
     sess = Session()
     user = User(username=uname, password=pw)
