@@ -78,6 +78,10 @@ def save_drawing(drawing_name, uid, pixel_data_list):
     if not drawing:
         drawing = Drawing(name=drawing_name, user=uid)
 
+    old_pixels = sess.query(BrushPixel).filter_by(drawing_id=drawing.id).all()
+    for pixel in old_pixels:
+        sess.delete(pixel)
+
     pixel_objects = []
     for pd in pixel_data_list:
         pixel = BrushPixel(color=pd.get("color"), shape=pd.get("shape"),
