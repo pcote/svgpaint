@@ -82,7 +82,6 @@ $(function(){
             "drawingData": drawingData,
             "drawingName": drawingName });
 
-        var drawingName = "testdrawing"; // todo: fill in this blank.
         var username = creds.username;
         var password = creds.password;
         var basicCreds = "Basic " + btoa(username + ":" + password);

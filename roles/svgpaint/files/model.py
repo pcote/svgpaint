@@ -78,6 +78,9 @@ def save_drawing(drawing_name, uid, pixel_data_list):
     if not drawing:
         drawing = Drawing(name=drawing_name, user=uid)
 
+    # TODO: This code exists because there is no proper cascade setup in the model.
+    # It would be better if orphaning the old pixels automatically caused the system
+    # to delete them.
     old_pixels = sess.query(BrushPixel).filter_by(drawing_id=drawing.id).all()
     for pixel in old_pixels:
         sess.delete(pixel)
