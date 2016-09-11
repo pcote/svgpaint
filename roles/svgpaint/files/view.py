@@ -1,4 +1,4 @@
-from flask import Flask, session, redirect, request, render_template, url_for, jsonify
+from flask import Flask, session, redirect, request, render_template, url_for, jsonify, abort
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 import model
 
@@ -57,14 +57,14 @@ def save_image():
     auth_data = request.authorization
     user_name = auth_data.username
     password = auth_data.password
+    if not model.is_password_valid(user_name, password):
+        abort(401)
+
     json_data = request.get_json()
     drawing_name = json_data.get("drawingName")
     pixel_data = json_data.get("drawingData")
-    if model.is_password_valid(user_name, password):
-        model.create_drawing(drawing_name, user_name, pixel_data)
-        return "Save Successful"
-    else:
-        return "Save failed due to invalid credentials"
+    model.create_drawing(drawing_name, user_name, pixel_data)
+    return "Save Successful"
 
 
 @app.route("/usercreds", methods=["GET"])
