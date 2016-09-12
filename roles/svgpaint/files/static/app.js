@@ -65,13 +65,27 @@ $(function(){
 
         for(i=0; i< rawSvgList.length; i++){
             tag = rawSvgList[i]
-            if(tag.tagName === "rect" || tag.tagName === "circle"){
+            if(tag.tagName === "rect"){
                 pixelRecord = {
                     shape: tag.tagName,
                     color: tag.getAttribute("fill"),
                     x: tag.getAttribute("x"),
                     y: tag.getAttribute("y"),
                     size: tag.getAttribute("width")
+                };
+
+                drawingData = drawingData.concat(pixelRecord);
+            }
+
+            else if(tag.tagName === "circle"){
+                diameter = tag.getAttribute("r") * 2;
+
+                pixelRecord = {
+                    shape: tag.tagName,
+                    color: tag.getAttribute("fill"),
+                    x: tag.getAttribute("cx"),
+                    y: tag.getAttribute("cy"),
+                    size: diameter
                 };
 
                 drawingData = drawingData.concat(pixelRecord);
