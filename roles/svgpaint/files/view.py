@@ -48,9 +48,22 @@ def index():
     return redirect("/static/login.html")
 
 
-@app.route("/load", methods=["POST"])
+@app.route("/load", methods=["GET"])
 def load_image():
-    return "stub for load image server code"
+    auth_data = request.authorization
+    user_name = auth_data.username
+    password = auth_data.password
+    if not model.is_password_valid(user_name, password):
+        abort(401)
+
+    drawing_name = request.headers.get("DrawingName")
+    pixel_data = model.get_pixel_data(drawing_name, user_name)
+    status = "OK"
+    if not pixel_data:
+        status = "FAILED TO GET PIXEL DATA"
+
+    result = dict(status=status, pixels=pixel_data)
+    return jsonify(result)
 
 @app.route("/save", methods=["POST"])
 def save_image():

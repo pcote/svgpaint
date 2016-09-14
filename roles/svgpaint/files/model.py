@@ -119,6 +119,19 @@ def get_drawings(uid):
     return drawings
 
 
+def get_pixel_data(drawing_name, user_name):
+    sess = Session()
+    query = sess.query(Drawing).filter_by(name=drawing_name, user=user_name)
+    drawing = query.one_or_none()
+    if not drawing:
+        return None
+    else:
+        pixels = drawing.pixels
+        dict_list = [dict(color=p.color, shape=p.shape, x=p.x, y=p.y, size=p.size)
+            for p in pixels]
+        return dict_list
+
+
 def is_password_valid(uname, pw):
     user = get_user(uname)
     if user and user.password == pw:

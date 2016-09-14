@@ -124,6 +124,56 @@ $(function(){
         return promise;
     };
 
+
+    var renderPixel = function(pixel){
+        console.log(pixel);
+        if(pixel.shape === "rect"){
+            var shape = svg.rect(pixel.size, pixel.size);
+        }
+        else {
+            var shape = svg.circle(pixel.size);
+        }
+
+        shape.move(pixel.x, pixel.y);
+        shape.fill(pixel.color);
+    };
+
+    var renderDrawing = function(res){
+        var pixels = [];
+        console.log("render drawing step reached....");
+        if(res.status === "OK"){
+            svg.clear();
+            pixels = res.pixels;
+            pixels.forEach(renderPixel);
+        }
+    };
+
+    var loadUserData = function(creds){
+        var username = creds.username;
+        var password = creds.password;
+        var authString = "Basic " + btoa(username + ":" + password);
+
+        var req = {
+            url: "/load",
+            method: "get",
+            headers: {
+                "Authorization": authString,
+                "DrawingName": $("#drawingNameField").val()
+            }
+        };
+
+        var promise = $.ajax(req);
+        promise.then(renderDrawing);
+
+    };
+
+    var loadHandler = function(){
+        var promise = getUserCredentials();
+        promise.then(loadUserData);
+    };
+
+    $("#menuLoad").click(loadHandler);
+
     var saveHandler = function(evt){
         var promise = getUserCredentials();
         promise.then(saveUserData);
