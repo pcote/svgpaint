@@ -48,7 +48,7 @@
     owner: www-data
     group: www-data
     mode: 0644
-
+  notify: "restart {{appname}}"
 
 - name: Copy over html and javascript static assets
   copy:
