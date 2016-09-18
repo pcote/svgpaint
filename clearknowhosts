@@ -1,0 +1,11 @@
+#!/usr/bin/python3
+import os
+
+if __name__ == '__main__':
+    home_path = os.environ.get("HOME")
+    known_host_path = "{}/.ssh/known_hosts".format(home_path)
+    with open(known_host_path, "wt") as fileob:
+        fileob.write("")
+
+    print("known_hosts file cleared")
+
