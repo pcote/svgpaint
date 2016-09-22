@@ -35,7 +35,11 @@ def create_user():
     new_username = request.form.get("newusernameTF")
     new_password = request.form.get("newpasswordTF")
     confirmed_password = request.form.get("confirmedpasswordTF")
-    if new_password == confirmed_password:
+
+    existing_user = model.get_user(new_username)
+    if existing_user:
+        msg = "User already exists"
+    elif new_password == confirmed_password:
         msg = model.create_user(new_username, new_password)
     else:
         msg = "Passwords do not match"
