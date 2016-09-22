@@ -11,23 +11,56 @@
 <body>
 
 <div class="container">
-    <form method="post" action="/login">
-        <table>
-            <tr>
-                <td><b>username</b></td>
-                <td><input name="usernameTF" type="text" /></td>
-            </tr>
-            <tr>
-                <td><b>Password</b></td>
-                <td><input name="passwordTF" type="password" /></td>
-            </tr>
-            <tr>
-                <td colspan="2">
-                    <input type="submit" value="login" />
-                </td>
-            </tr>
-        </table>
-    </form>
+
+
+    <div class="row">
+        <div class="col-lg-6">
+            <form method="post" action="/login">
+                <table>
+                    <tr>
+                        <td colspan="2"><b><u>Login</u></b></td>
+                    </tr>
+                    <tr>
+                        <td><b>username: </b></td>
+                        <td><input name="usernameTF" type="text" /></td>
+                    </tr>
+                    <tr>
+                        <td><b>Password: </b></td>
+                        <td><input name="passwordTF" type="password" /></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <input type="submit" value="login" class="btn btn-primary" />
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+        <div class="col-lg-6">
+            <form method="post" action="/createuser">
+                <table>
+                    <tr>
+                        <td colspan="2"><b><u>Create User</u></b></td>
+                    </tr>
+                    <tr>
+                        <td><b>New Username: </b></td>
+                        <td><input type="text" name="newusernameTF" /></td>
+                    </tr>
+                    <tr>
+                        <td><b>New Password: </b></td>
+                        <td><input type="password" name="newpasswordTF" /></td>
+                    </tr>
+                    <tr>
+                        <td><b>Confirm Password: </b></td>
+                        <td><input type="password" name="confirmedpasswordTF" /></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><input type="submit" value="create account" class="btn btn-primary" /></td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
 </div>
 
 <script>

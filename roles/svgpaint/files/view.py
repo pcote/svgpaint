@@ -7,10 +7,12 @@ app.secret_key="SetSecretKeyHere"
 logman = LoginManager()
 logman.init_app(app)
 
+
 @logman.user_loader
 def load_user(user_id):
     user = model.get_user(user_id)
     return user
+
 
 @app.route("/login", methods=["POST"])
 def login():
@@ -28,6 +30,18 @@ def login():
         return "Your credentials are wrong. Please backspace and try again"
 
 
+@app.route("/createuser", methods=["POST"])
+def create_user():
+    new_username = request.form.get("newusernameTF")
+    new_password = request.form.get("newpasswordTF")
+    confirmed_password = request.form.get("confirmedpasswordTF")
+    if new_password == confirmed_password:
+        msg = model.create_user(new_username, new_password)
+    else:
+        msg = "Passwords do not match"
+    return msg
+
+
 @app.route("/logout")
 def logout():
     username = current_user.username
@@ -42,6 +56,7 @@ def main_page():
         return redirect("/static/login.html")
     else:
         return render_template("mainpage.html")
+
 
 @app.route("/")
 def index():
@@ -64,6 +79,7 @@ def load_image():
 
     result = dict(status=status, pixels=pixel_data)
     return jsonify(result)
+
 
 @app.route("/save", methods=["POST"])
 def save_image():
@@ -92,6 +108,7 @@ def get_user_creds():
 @app.route("/new")
 def new_image():
     return "Stub stuff for server side new image creation..."
+
 
 if __name__ == '__main__':
     app.run(debug=True)

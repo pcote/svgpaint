@@ -102,6 +102,7 @@ def create_user(uname, pw):
     sess.add(user)
     sess.commit()
     sess.close()
+    return "created user: {}".format(uname)
 
 
 def get_user(uname):
