@@ -32,9 +32,10 @@ def login():
 
 @app.route("/createuser", methods=["POST"])
 def create_user():
-    new_username = request.form.get("newusernameTF")
-    new_password = request.form.get("newpasswordTF")
-    confirmed_password = request.form.get("confirmedpasswordTF")
+    data = request.get_json()
+    new_username = data.get("newUsername")
+    new_password = data.get("newPassword")
+    confirmed_password = data.get("confirmedPassword")
 
     existing_user = model.get_user(new_username)
     if existing_user:

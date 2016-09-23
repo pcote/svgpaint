@@ -37,33 +37,34 @@
             </form>
         </div>
         <div class="col-lg-6">
-            <form method="post" action="/createuser">
+
                 <table>
                     <tr>
                         <td colspan="2"><b><u>Create User</u></b></td>
                     </tr>
                     <tr>
                         <td><b>New Username: </b></td>
-                        <td><input type="text" name="newusernameTF" /></td>
+                        <td><input type="text" id="newusernameTF" /></td>
                     </tr>
                     <tr>
                         <td><b>New Password: </b></td>
-                        <td><input type="password" name="newpasswordTF" /></td>
+                        <td><input type="password" id="newpasswordTF" /></td>
                     </tr>
                     <tr>
                         <td><b>Confirm Password: </b></td>
-                        <td><input type="password" name="confirmedpasswordTF" /></td>
+                        <td><input type="password" id="confirmedpasswordTF" /></td>
                     </tr>
                     <tr>
-                        <td colspan="2"><input type="submit" value="create account" class="btn btn-primary" /></td>
+                        <td colspan="2">
+                            <button id="createuserButton" class="btn btn-primary">Create Account</button>
+                        </td>
                     </tr>
                 </table>
-            </form>
+
         </div>
     </div>
 </div>
 
-<script>
-</script>
+<script src="login.js"></script>
 </body>
 </html>
