@@ -3,6 +3,7 @@ from sqlalchemy.orm import sessionmaker, relationship
 from sqlalchemy.ext.declarative import declarative_base
 from configparser import ConfigParser
 import os
+import hashlib
 from flask_login import UserMixin
 
 # ENGINE SETUP
@@ -98,7 +99,10 @@ def save_drawing(drawing_name, uid, pixel_data_list):
 
 def create_user(uname, pw):
     sess = Session()
-    user = User(username=uname, password=pw)
+    hasher = hashlib.sha1()
+    hasher.update(pw.encode())
+    digest = hasher.hexdigest()
+    user = User(username=uname, password=digest)
     sess.add(user)
     sess.commit()
     sess.close()
@@ -134,8 +138,13 @@ def get_pixel_data(drawing_name, user_name):
 
 
 def is_password_valid(uname, pw):
+    import hashlib
+    hasher = hashlib.sha1()
+    hasher.update(pw.encode())
+    digest = hasher.hexdigest()
+
     user = get_user(uname)
-    if user and user.password == pw:
+    if user and user.password == digest:
         return True
     return False
 
