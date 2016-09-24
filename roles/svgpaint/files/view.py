@@ -16,18 +16,25 @@ def load_user(user_id):
 
 @app.route("/login", methods=["POST"])
 def login():
-    username = request.form.get("usernameTF")
-    password = request.form.get("passwordTF")
+    auth = request.authorization
+    username = auth.username
+    password = auth.password
     password_correct = model.is_password_valid(username, password)
+
+    result = {}
 
     if password_correct:
         user = model.get_user(username)
         user.is_active = True
         user.is_authenticated = True
         login_user(user)
-        return redirect(url_for("main_page"))
+        url = url_for("main_page")
+        result["state"] = "succeeded"
+        result["url"] = url
     else:
-        return "Your credentials are wrong. Please backspace and try again"
+        result["state"] = "failed"
+
+    return jsonify(result)
 
 
 @app.route("/createuser", methods=["POST"])

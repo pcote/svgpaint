@@ -28,5 +28,35 @@ $(function(){
         promise.then(createUserCallback);
     };
 
+
+    var loginHandler = function(evt){
+
+        var loginResult = function(res){
+            if(res.state === "succeeded"){
+                window.location = res.url;
+            }
+            else{
+                alert("login failed");
+            }
+        };
+
+        evt.preventDefault();
+        var uname = $("#usernameTF").val();
+        var pw = $("#passwordTF").val();
+        var authString = "Basic " + btoa(uname + ":" + pw);
+
+        var req = {
+            url: "/login",
+            method: "post",
+            headers: {
+                "Authorization": authString
+            }
+        };
+
+        var promise = $.ajax(req);
+        promise.then(loginResult);
+    };
+
     $("#createuserButton").click(newUserHandler);
+    $("#loginButton").click(loginHandler);
 });
