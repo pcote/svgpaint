@@ -80,7 +80,7 @@ def load_image():
     auth_data = request.authorization
     user_name = auth_data.username
     password = auth_data.password
-    if not model.is_password_valid(user_name, password):
+    if not model.is_password_valid(user_name, password, prehashed=True):
         abort(401)
 
     drawing_name = request.headers.get("DrawingName")
@@ -98,7 +98,8 @@ def save_image():
     auth_data = request.authorization
     user_name = auth_data.username
     password = auth_data.password
-    if not model.is_password_valid(user_name, password):
+    
+    if not model.is_password_valid(user_name, password, prehashed=True):
         abort(401)
 
     json_data = request.get_json()

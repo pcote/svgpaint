@@ -137,14 +137,16 @@ def get_pixel_data(drawing_name, user_name):
         return dict_list
 
 
-def is_password_valid(uname, pw):
-    import hashlib
-    hasher = hashlib.sha1()
-    hasher.update(pw.encode())
-    digest = hasher.hexdigest()
+def is_password_valid(uname, pw, prehashed=False):
+    if prehashed:
+        password_arg = pw
+    else:
+        hasher = hashlib.sha1()
+        hasher.update(pw.encode())
+        password_arg = hasher.hexdigest()
 
     user = get_user(uname)
-    if user and user.password == digest:
+    if user and user.password == password_arg:
         return True
     return False
 
