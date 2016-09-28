@@ -99,7 +99,7 @@ def save_drawing(drawing_name, uid, pixel_data_list):
 
 def create_user(uname, pw):
     sess = Session()
-    hasher = hashlib.sha1()
+    hasher = hashlib.sha256()
     hasher.update(pw.encode())
     digest = hasher.hexdigest()
     user = User(username=uname, password=digest)
@@ -141,7 +141,7 @@ def is_password_valid(uname, pw, prehashed=False):
     if prehashed:
         password_arg = pw
     else:
-        hasher = hashlib.sha1()
+        hasher = hashlib.sha256()
         hasher.update(pw.encode())
         password_arg = hasher.hexdigest()
 
